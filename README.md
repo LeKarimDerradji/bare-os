@@ -54,6 +54,37 @@ This sets the panic strategy to abort for both the `dev` profile (used for `carg
 
 ### Start
 
+Every language has a runtime system, that specifies an execution model, as well as setting up and managing the stack, the heap, and including other features such as garbage collection, threads or other dynamic features built into the language.
+
+In Rust, execution starts at a C runtime library called `crt0` to manage the process stack, create space for local variables... then it invoke the `start`entry point in our Rust program. 
+
+Which finally call the `main`function of our program.
+
+Since we don't use the standard library, we need to overwrite the `start`language item ourselve, implementing it will still require `crt0`to invoke it. 
+
+To instruct the Rust compiler to not use the normal entry point chain. 
+We add `#![no_main]`to the top our program. 
+
+We can now overwrite the operating system entry point with a custom `_start`function. 
+
+```rust
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    loop {}
+}
+```
+
+Here, we need to use `#[no_mangle]` to disable name mangling, so that the Rust compiler really outputs this function with `_start` as a name. 
+
+We also mark the function as `extern "C"`to tell the compiler that this function should be called using the C calling convention, so it gets invoked by most system when it boots. 
+
+The function is also diverging, cause it's a freestanding binary, therefore it should not return a main entry point. 
+
+
+
+
+
+
 
 
 
