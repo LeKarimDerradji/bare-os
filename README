@@ -1,0 +1,8 @@
+##A Freestanding Rust Binary
+
+To deepen my understanding of computer science and Rust, 
+I am building an operating system. 
+
+The first step is to create a Freestanding Rust Binary that does not use the STD lib
+in order for that binary to be executed on bare-metal, without the need of an OS. 
+
