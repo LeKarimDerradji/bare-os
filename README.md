@@ -18,20 +18,20 @@ For that, we declare `!#[no_std]` at the begining of our program.
 Because we disabled the standard library, when the program crash, there's no panic handler. 
 So we need to define it ourselves :
 
-`// in main.rs
-
-use core::panic::PanicInfo;
-
-/// This function is called on panic.
+```rust
+// Create a panic_handler 
 #[panic_handler]
+// This function is called on panic 
 fn panic(_info: &PanicInfo) -> ! {
-    // Behavior on panic
-}`
+    //What happen on panic
+}
+```
 
 The `#[panic_handler]` attribute defines the function that the compiler should invoke when a panic occurs.
 
 The `PanicInfo` parameter contains the file path and the line where the panic occurs.
 This function should never return, so we mark it as a diverging function, with the symbol `!`
+
 
 
 
