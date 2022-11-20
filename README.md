@@ -1,4 +1,4 @@
-# Operating-System written in Rust
+# An Operating-System written in Rust
 
 To deepen my understanding of computer science and Rust, 
 I am building an operating system. 
