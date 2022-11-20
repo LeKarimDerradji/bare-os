@@ -32,14 +32,14 @@ fn panic(_info: &PanicInfo) -> ! {
 The `#[panic_handler]` attribute defines the function that the compiler should invoke when a panic occurs.
 
 The `PanicInfo` parameter contains the file path and the line where the panic occurs.
-This function should never return, so we mark it as a diverging function, with the symbol `!`
+This function should never return, so we mark it as a diverging function, with the symbol `!`.
 
 ### Disabling Unwinding
 
 Now we have to disable unwinding, in Rust it is used to run the destructors of all live stack variables in case of a panic.
 But it requires OS specific libraries to function, so we need to disable it. 
 
-The best way to do that, is to edit `Cargo.toml`
+The best way to do that, is to edit `Cargo.toml`.
 
 ```rust
 // In Cargo.toml
