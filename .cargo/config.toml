@@ -6,3 +6,6 @@ build-std = ["core", "compiler_builtins"]
 # Overriding the default target so it compile to our target specifications
 [build]
 target = "x86_64-bare_metal_os.json"
+
+[target.'cfg(target_os = "none")']
+runner = "bootimage runner"
