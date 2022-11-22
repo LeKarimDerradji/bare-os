@@ -92,13 +92,40 @@ When you turn on a computer, it loads the BIOS from some special flash memory lo
 
 The bootloader has to determine the location of the kernel image on the disk and load it into memory. It also needs to switch the CPU from the 16-bit real mode first to the 32-bit protected mode, and then to the 64-bit long mode, where 64-bit registers and the complete main memory are available. Its third job is to query certain information (such as a memory map) from the BIOS and pass it to the OS kernel.
 
-### Bios Boot
+### Bootimage
 
-### The MultiBoot Standard
+Because writting a bootloader is not part of this project, we're using https://github.com/rust-osdev/bootimage to prepend a bootloader to our minimal Kernel. 
 
 ### Rust Nightly 
 
+Rust has three release channel: stable, beta, and nightly.
+The nightly channel allows the use of experimental features. 
+To use the nighlty channel, we just have to type `rustup override set nightly`into the terminal.  
+
 ### Target Specs
+
+With Cargo, the rust package manager, we can specify the target systems we would like the compiler to build for. 
+Rust allow us to specify our custom target with a `.json`file that we simply put in the project's root, with all the specifications as key-value pairs. 
+
+```json
+{
+    "llvm-target": "x86_64-unknown-none",
+    "data-layout": "e-m:e-i64:64-f80:128-n8:16:32:64-S128",
+    "arch": "x86_64",
+    "target-endian": "little",
+    "target-pointer-width": "64",
+    "target-c-int-width": "32",
+    "os": "none",
+    "executables": true,
+    "linker-flavor": "ld.lld",
+    "linker": "rust-lld",
+    "panic-strategy": "abort",
+    "disable-redzone": true,
+    "features": "-mmx,-sse,+soft-float"
+}
+```
+
+
 
 ### Building the Kernel
 
