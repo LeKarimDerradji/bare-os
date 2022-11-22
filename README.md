@@ -161,9 +161,11 @@ To set a default target on each built, we can add the following to the `config.t
 target = "x86_64-blog_os.json"
 ```
 
-### Printing on Screen
+Now Cargo will build for our target specificiations with the `cargo build` command. 
 
-### Running the Kernel 
+## Running the Kernel 
+
+### Creating a Bootimage
 
 ### Booting the Kernel
 
