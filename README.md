@@ -167,7 +167,32 @@ Now Cargo will build for our target specificiations with the `cargo build` comma
 
 ### Creating a Bootimage
 
+To create a bootimage, we need to append a bootloader to it. Since the project doesnt cover this part, we will use a dependencies : 
+
+```rust
+# in Cargo.toml
+
+[dependencies]
+bootloader = "0.9.8"
+```
+
 ### Booting the Kernel
+
+TODO
+
+# VGA Text Mode 
+
+The VGA Text Mode is a simple way to print text to the screen. 
+In this chapter we implement the interface for the VGA Text Buffer. 
+
+## VGA Text Buffer 
+
+The VGA Text Buffer is a two dimentional array of 25 Rows and 80 Columns. 
+Each array entry describes a single screen character 
+
+## Rust Module 
+
+### Colors 
 
 
 
