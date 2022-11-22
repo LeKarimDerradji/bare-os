@@ -100,12 +100,16 @@ Because writting a bootloader is not part of this project, we're using https://g
 
 Rust has three release channel: stable, beta, and nightly.
 The nightly channel allows the use of experimental features. 
-To use the nighlty channel, we just have to type `rustup override set nightly`into the terminal.  
+To use the nighlty channel, we just have to type `rustup override set nightly` into the terminal. 
+This will allow us to build for our specific target, so our binary runs on bare-metal as well as using the `build-std` feature.  
 
 ### Target Specs
 
-With Cargo, the rust package manager, we can specify the target systems we would like the compiler to build for. 
-Rust allow us to specify our custom target with a `.json`file that we simply put in the project's root, with all the specifications as key-value pairs. 
+Cargo supports different target systems through the --target parameter.
+However, it doesn't have a target for bare-metal x86_64 arch. 
+But Rust allow us to specify our custom target with a `.json` file that we simply put in the project's root, with all the specifications as key-value pairs. 
+
+This is the specifications for the compiler to build for a bare-metal target. 
 
 ```json
 {
@@ -125,9 +129,37 @@ Rust allow us to specify our custom target with a `.json`file that we simply put
 }
 ```
 
-
-
 ### Building the Kernel
+
+Because we disabled any library, we need to recompile them using the `build-std` feature. 
+To use that feature, we create a file at `.cargo/config.toml`, with the following content : 
+
+```rust
+# in .cargo/config.toml
+
+[unstable]
+build-std-features = ["compiler-builtins-mem"]
+build-std = ["core", "compiler_builtins"]
+```
+
+`build-std = ["core", "compiler_builtins"]` tells Cargo to recompile the `core` and `compiler_builtins` libraries. 
+
+In the `compiler_builtins` crate, there's built-in function required by all systems.  
+These functions include memset, memcpy, and memcmp. 
+They are useful to us in the future, because they allow us to manipulate the memory from our kernel. 
+However, they are not enabled by default, to do it, we just have to declare : 
+`build-std-features = ["compiler-builtins-mem"]` inside the .cargo/config.toml file. 
+
+### Set a default target 
+
+To set a default target on each built, we can add the following to the `config.toml` file. 
+
+```rust
+# in .cargo/config.toml
+
+[build]
+target = "x86_64-blog_os.json"
+```
 
 ### Printing on Screen
 
