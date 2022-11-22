@@ -1,5 +1,6 @@
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(transparent)]
+// Creating struct for color code 
 struct ColorCode(u8);
 
 impl ColorCode {

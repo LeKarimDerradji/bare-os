@@ -80,6 +80,34 @@ We also mark the function as `extern "C"`to tell the compiler that this function
 
 The function is also diverging, cause it's a freestanding binary, therefore it should not return a main entry point. 
 
+## From freestanding binary to bootable disk image. 
+
+Now that we've created a minimal kernel, it's time to improve it, the next step is to make the binary bootable, after the booting process, our kernel should print something to the screen. 
+
+This part will talk about computer boot sequence, an overview of the Rust toolchain, cutomizing builds with Rust and Cargo, dependencies, creating a bootimage, and printing characters to the screen by writting on the VGA text buffer at physical memory address 0xB8000.
+
+### The Boot Process 
+
+
+### Bios Boot
+
+### The MultiBoot Standard
+
+### Rust Nightly 
+
+### Target Specs
+
+### Building the Kernel
+
+### Printing on Screen
+
+### Running the Kernel 
+
+### Booting the Kernel
+
+
+
+
 
 
 
