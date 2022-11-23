@@ -1,14 +1,3 @@
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-#[repr(transparent)]
-// Creating struct for color code
-struct ColorCode(u8);
-
-impl ColorCode {
-    fn new(foreground: Color, background: Color) -> ColorCode {
-        ColorCode((background as u8) << 4 | (foreground as u8))
-    }
-}
-
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -29,6 +18,17 @@ pub enum Color {
     Pink = 13,
     Yellow = 14,
     White = 15,
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(transparent)]
+// Creating struct for color code
+struct ColorCode(u8);
+
+impl ColorCode {
+    fn new(foreground: Color, background: Color) -> ColorCode {
+        ColorCode((background as u8) << 4 | (foreground as u8))
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -73,4 +73,5 @@ impl Writter {
             }
         }
     }
+    fn new_line(&mut self) {}
 }
