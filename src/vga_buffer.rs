@@ -1,3 +1,5 @@
+use volatile::Volatile;
+
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 #[repr(u8)]
@@ -43,7 +45,7 @@ const BUFFER_WIDTH: usize = 80;
 
 #[repr(transparent)]
 struct Buffer {
-    chars: [[ScreenChar; BUFFER_WIDTH]; BUFFER_HEIGHT],
+    chars: [[Volatile<ScreenChar>; BUFFER_WIDTH]; BUFFER_HEIGHT],
 }
 
 pub struct Writter {
@@ -65,13 +67,36 @@ impl Writter {
                 let col = self.column_position;
 
                 let color_code = self.color_code;
-                self.buffer.chars[col][row] = ScreenChar {
+                self.buffer.chars[row][col].write(ScreenChar {
                     acsii_character: byte,
                     color_code,
-                };
-                self.column_position += 1; 
+                });
+                self.column_position += 1;
             }
         }
     }
     fn new_line(&mut self) {}
+
+    pub fn write_string(&mut self, s: &str) {
+        for byte in s.bytes() {
+            match byte {
+                // printable ASCII byte or newline
+                0x20..=0x7e | b'\n' => self.write_byte(byte),
+                // not part of printable ASCII range
+                _ => self.write_byte(0xfe),
+            }
+        }
+    }
+}
+
+pub fn print_something() {
+    let mut writer = Writter {
+        column_position: 0,
+        color_code: ColorCode::new(Color::Cyan, Color::Black),
+        buffer: unsafe {&mut *(0xb8000 as *mut Buffer)},
+    };
+
+    writer.write_byte(b'H');
+    writer.write_string("ello ");
+    writer.write_string("Wörld!");
 }
