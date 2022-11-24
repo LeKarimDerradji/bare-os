@@ -89,8 +89,7 @@ impl Writer {
         self.column_position = 0;
     }
 
-    fn clear_row(&mut self, row: usize) {/* TODO */};
-
+    fn clear_row(&mut self, row: usize) {/* TODO */}
     
 
     pub fn write_string(&mut self, s: &str) {
