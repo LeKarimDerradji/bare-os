@@ -7,16 +7,7 @@ use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
 // This function will be called on start as an entry point
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    use core::fmt::Write;
-    vga_buffer::WRITER.lock().write_str("Hello again").unwrap();
-    write!(
-        vga_buffer::WRITER.lock(),
-        ", some numbers: {} {}",
-        42,
-        1.337
-    )
-    .unwrap();
-
+    println!("Hello World{}", "!");
     loop {}
 }
 
