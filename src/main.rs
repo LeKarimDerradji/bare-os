@@ -6,8 +6,6 @@
 mod vga_buffer;
 use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
 
-
-
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Fn()]) {
     println!("Running {} tests", tests.len());
@@ -16,6 +14,12 @@ fn test_runner(tests: &[&dyn Fn()]) {
     }
 }
 
+#[test_case]
+fn trivial_assertion() {
+    print!("trivial assertion...");
+    assert_eq!(1, 1);
+    println!("[ok]");
+}
 
 // Disable name mangling on this function
 // This function will be called on start as an entry point
@@ -25,8 +29,24 @@ pub extern "C" fn _start() -> ! {
 
     #[cfg(test)]
     test_main();
-    
+
     loop {}
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[repr(u32)]
+pub enum QuemuExitCode {
+    Success = 0x10,
+    Failed = 0x11,
+}
+
+pub fn exit_quemu(exit_code: QuemuExitCode) {
+    use x86_64::instructions::port::Port;
+
+    unsafe {
+        let mut port = Port::new(0xf4);
+        port.write(exit_code as u32);
+    }
 }
 
 // Create a panic_handler
