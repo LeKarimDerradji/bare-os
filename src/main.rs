@@ -2,6 +2,7 @@
 #![no_main] // Disable all Rust-level entry points.
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
+#![reexport_test_harness_main = "test_main"]
 mod vga_buffer;
 use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
 
@@ -22,6 +23,9 @@ fn test_runner(tests: &[&dyn Fn()]) {
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
+    #[cfg(test)]
+    test_main();
+    
     loop {}
 }
 
