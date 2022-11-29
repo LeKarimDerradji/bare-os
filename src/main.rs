@@ -13,13 +13,22 @@ fn test_runner(tests: &[&dyn Fn()]) {
     for test in tests {
         test();
     }
-    exit_quemu(QemuExitCode::Success);
+    exit_qemu(QemuExitCode::Success);
+}
+
+#[cfg(test)]
+#[panic_handler]
+fn panic(info: &PanicInfo) -> ! {
+    serial_println!("[failed]\n");
+    serial_println!("Error: {}\n", info);
+    exit_qemu(QemuExitCode::Failed);
+    loop {}
 }
 
 #[test_case]
 fn trivial_assertion() {
     serial_print!("trivial assertion...");
-    assert_eq!(1, 1);
+    assert_eq!(0, 1);
     println!("[ok]");
 }
 
@@ -30,7 +39,7 @@ pub enum QemuExitCode {
     Failed = 0x11,
 }
 
-pub fn exit_quemu(exit_code: QemuExitCode) {
+pub fn exit_qemu(exit_code: QemuExitCode) {
     use x86_64::instructions::port::Port;
 
     unsafe {
@@ -52,6 +61,7 @@ pub extern "C" fn _start() -> ! {
 }
 
 // Create a panic_handler
+#[cfg(not(test))] 
 #[panic_handler]
 // This function is called on panic
 fn panic(_info: &PanicInfo) -> ! {
