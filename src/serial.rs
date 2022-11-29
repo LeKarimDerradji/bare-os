@@ -15,3 +15,12 @@ pub fn _print(args: ::core::fmt::Arguments) {
     use core::fmt::Write;
     SERIAL1.lock().write_fmt(args).expect("Printing to serial failed");
 }
+
+// Print to the host through the serial interface
+#[macro_export]
+macro_rules! serial_print {
+    ($($arg:tt)*) => {
+        $crate::serial::_print(format_args!($($args)*));
+    };
+}
+
