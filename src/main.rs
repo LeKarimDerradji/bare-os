@@ -5,6 +5,7 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
+use bare_metal_os::println;
 
 pub trait Testable {
     fn run(&self) -> ();
@@ -15,15 +16,15 @@ where
     T: Fn(),
 {
     fn run(&self) {
-        serial_print!("{}...\t", core::any::type_name::<T>());
+        bare_metal_os::serial_print!("{}...\t", core::any::type_name::<T>());
         self();
-        serial_println!("[ok]");
+        bare_metal_os::serial_println!("[ok]");
     }
 }
 
 #[cfg(test)]
 fn test_runner(tests: &[&dyn Testable]) {
-    serial_println!("Running {} tests", tests.len());
+    bare_metal_os::serial_println!("Running {} tests", tests.len());
     for test in tests {
         test.run();
     }
@@ -33,8 +34,8 @@ fn test_runner(tests: &[&dyn Testable]) {
 #[cfg(test)]
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
-    serial_println!("[failed]\n");
-    serial_println!("Error: {}\n", info);
+    bare_metal_os::serial_println!("[failed]\n");
+    bare_metal_os::serial_println!("Error: {}\n", info);
     exit_qemu(QemuExitCode::Failed);
     loop {}
 }

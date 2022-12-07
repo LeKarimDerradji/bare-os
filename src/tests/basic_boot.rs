@@ -3,6 +3,7 @@
 #![feature(custom_test_frameworks)]
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
+#![test_runner(bare_metal_os::test_runner)]
 
 use core::panic::PanicInfo;
 
@@ -19,6 +20,7 @@ fn test_runner(tests: &[&dyn Fn()]) {
 
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
+    bare_metal_os::test_panic_handler(info);
     loop {}
 }
 
