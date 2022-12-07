@@ -6,6 +6,7 @@
 #![test_runner(bare_metal_os::test_runner)]
 
 use core::panic::PanicInfo;
+use bare_metal_os::println;
 
 #[no_mangle] // don't mangle the name of this function
 pub extern "C" fn _start() -> ! {
@@ -14,8 +15,9 @@ pub extern "C" fn _start() -> ! {
     loop {}
 }
 
-fn test_runner(tests: &[&dyn Fn()]) {
-    unimplemented!();
+#[test_case]
+fn test_println() {
+    println!("test_println output");
 }
 
 #[panic_handler]
