@@ -2,7 +2,7 @@
 
 use crate::println;
 use lazy_static::lazy_static;
-use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
+use x86_64::{structures::idt::{InterruptDescriptorTable, InterruptStackFrame}, instructions::interrupts};
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
@@ -13,7 +13,7 @@ lazy_static! {
 }
 
 pub fn init_idt() {
-    IDT.load();
+    interrupts::init_idt();
 }
 
 extern "x86-interrupt" fn breakpoint_handler(stack_frame: InterruptStackFrame) {
