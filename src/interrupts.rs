@@ -1,8 +1,6 @@
-#![feature(abi_x86_interrupt)]
-
 use crate::println;
 use lazy_static::lazy_static;
-use x86_64::{structures::idt::{InterruptDescriptorTable, InterruptStackFrame}, instructions::interrupts};
+use x86_64::structures::idt::{InterruptDescriptorTable, InterruptStackFrame};
 
 lazy_static! {
     static ref IDT: InterruptDescriptorTable = {
@@ -13,7 +11,7 @@ lazy_static! {
 }
 
 pub fn init_idt() {
-    interrupts::init_idt();
+    IDT.load();
 }
 
 extern "x86-interrupt" fn breakpoint_handler(stack_frame: InterruptStackFrame) {
