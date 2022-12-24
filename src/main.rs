@@ -12,10 +12,12 @@ use bare_metal_os::println;
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
-    bare_metal_os::init(); // new
+    bare_metal_os::init(); 
 
-    // invoke a breakpoint exception
-    x86_64::instructions::interrupts::int3(); // new
+    // trigger a page fault
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    };
 
     // as before
     #[cfg(test)]
