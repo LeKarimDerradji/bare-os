@@ -6,15 +6,22 @@
 
 use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
 use bare_metal_os::println;
-
 // Disable name mangling on this function
 // This function will be called on start as an entry point
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
+    bare_metal_os::init(); // new
+
+    // invoke a breakpoint exception
+    x86_64::instructions::interrupts::int3(); // new
+
+    // as before
     #[cfg(test)]
     test_main();
+
+    println!("It did not crash!");
 
     loop {}
 }
