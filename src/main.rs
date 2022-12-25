@@ -4,21 +4,22 @@
 #![test_runner(bare_metal_os::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
 use bare_metal_os::println;
+use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
 // Disable name mangling on this function
 // This function will be called on start as an entry point
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");
 
-    bare_metal_os::init(); 
+    bare_metal_os::init();
 
-    // trigger a page fault
-    unsafe {
-        *(0xdeadbeef as *mut u64) = 42;
-    };
+    fn stack_overflow() {
+        stack_overflow(); // for each recursion, the return address is pushed
+    }
 
+    // trigger a stack overflow
+    stack_overflow();
     // as before
     #[cfg(test)]
     test_main();
@@ -42,9 +43,7 @@ fn panic(info: &PanicInfo) -> ! {
     bare_metal_os::test_panic_handler(info)
 }
 
-
 #[test_case]
 fn trivial_assertion() {
     assert_eq!(1, 1);
 }
-
