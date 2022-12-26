@@ -6,8 +6,8 @@
 
 use bare_metal_os::println;
 use core::panic::PanicInfo; // Import PanicInfo from panic in the core lib
-// Disable name mangling on this function
-// This function will be called on start as an entry point
+                            // Disable name mangling on this function
+                            // This function will be called on start as an entry point
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
     println!("Hello World{}", "!");

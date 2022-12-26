@@ -5,12 +5,11 @@
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
+pub mod gdt;
+pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
-pub mod interrupts;
-pub mod gdt;
 use core::panic::PanicInfo;
-
 
 pub fn init() {
     gdt::init();
@@ -55,8 +54,6 @@ pub extern "C" fn _start() -> ! {
     test_main();
     loop {}
 }
-
-
 
 #[cfg(test)]
 #[panic_handler]
